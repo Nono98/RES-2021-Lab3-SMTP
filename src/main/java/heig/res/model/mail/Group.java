@@ -5,12 +5,12 @@ import java.util.*;
 public class Group {
     private List<Person> group = new ArrayList<>();
 
-    public Group(List<Person> personList){
-        group.addAll(personList);
+    public List<Person> getGroup() {
+        return new ArrayList<>(group);
     }
 
-    public List<Person> getGroup() {
-        return group;
+    public void setGroup(List<Person> personList){
+        group.addAll(personList);
     }
 
     public void addMember(Person p){

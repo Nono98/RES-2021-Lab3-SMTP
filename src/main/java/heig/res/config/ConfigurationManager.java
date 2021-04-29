@@ -17,15 +17,16 @@ public class ConfigurationManager implements IConfigurationManager {
     private int numberOfGroups;
 
     public ConfigurationManager() {
-        loadProperties("./config/config.properties");
-        messages = loadMessages("./config/messages.utf8");
-        victims = loadVictims("./config/victims.utf8");
+        loadProperties("../config/config.properties");
+        messages = loadMessages("../config/messages.utf8");
+        victims = loadVictims("../config/victims.utf8");
 
     }
 
     public void loadProperties(String file){
         try (InputStream input = new FileInputStream(file)) {
             Properties prop = new Properties();
+            prop.load(input);
 
             smtpServerAddress = prop.getProperty("smtpServerAddress");
             smtpServerPort = Integer.parseInt(prop.getProperty("smtpServerPort"));
