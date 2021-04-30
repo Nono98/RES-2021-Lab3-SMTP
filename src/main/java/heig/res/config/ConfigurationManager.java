@@ -1,9 +1,18 @@
+/*
+ -----------------------------------------------------------------------------------
+ Laboratoire : RES - Laboratoire SMTP
+ Fichier     : ConfigurationManager.java
+ Auteur(s)   : Robin Gaudin, Noémie Plancherel
+ Date        : 02.05.2021
+ But         : Classe permettant de récupérer les informations contenues dans les fichiers de configuration
+ Remarque(s) : -
+ -----------------------------------------------------------------------------------
+*/
 package heig.res.config;
 
 import heig.res.model.mail.Person;
 
 import java.io.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -11,11 +20,14 @@ import java.util.Properties;
 public class ConfigurationManager implements IConfigurationManager {
     private String smtpServerAddress;
     private int smtpServerPort;
-    private List<Person> victims;
+    private final List<Person> victims;
     private List<Person> cc;
-    private List<String> messages;
+    private final List<String> messages;
     private int numberOfGroups;
 
+    /**
+     * Constructeur
+     */
     public ConfigurationManager() {
         loadProperties("../config/config.properties");
         messages = loadMessages("../config/messages.utf8");
@@ -23,6 +35,10 @@ public class ConfigurationManager implements IConfigurationManager {
 
     }
 
+    /**
+     * Méthode permettant de charger les propriétés du serveur SMTP
+     * @param file - fichier contenant les propriétés
+     */
     public void loadProperties(String file){
         try (InputStream input = new FileInputStream(file)) {
             Properties prop = new Properties();
@@ -45,6 +61,11 @@ public class ConfigurationManager implements IConfigurationManager {
         }
     }
 
+    /**
+     * Méthode permettant de charger les différents messages
+     * @param file - fichier contenant les messages
+     * @return - messages sous un format string
+     */
     public List<String> loadMessages(String file) {
         List<String> result = new ArrayList<>();
         try (FileInputStream input = new FileInputStream(file)){
@@ -53,7 +74,7 @@ public class ConfigurationManager implements IConfigurationManager {
             String line;
             StringBuilder message = new StringBuilder();
             while((line = read.readLine()) != null) {
-                while((line!= null && !line.contains("=="))) {
+                while((line != null && !line.contains("=="))) {
                     message.append(line);
                     message.append("\n");
                     line = read.readLine();
@@ -66,6 +87,11 @@ public class ConfigurationManager implements IConfigurationManager {
         return result;
     }
 
+    /**
+     * Méthode permettant de charger la liste des destinataires des mails
+     * @param file - fichier cotenant les adresses mails
+     * @return - liste des personnes
+     */
     public List<Person> loadVictims(String file) {
         List<Person> result = new ArrayList<>();
         try (FileInputStream input = new FileInputStream(file)){

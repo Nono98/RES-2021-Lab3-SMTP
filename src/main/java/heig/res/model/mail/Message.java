@@ -1,3 +1,13 @@
+/*
+ -----------------------------------------------------------------------------------
+ Laboratoire : RES - Laboratoire SMTP
+ Fichier     : Message.java
+ Auteur(s)   : Robin Gaudin, Noémie Plancherel
+ Date        : 02.05.2021
+ But         : Classe objet pour les mails des pranks
+ Remarque(s) : -
+ -----------------------------------------------------------------------------------
+*/
 package heig.res.model.mail;
 
 public class Message {
@@ -7,6 +17,7 @@ public class Message {
     private String[] cc;
     private String body;
 
+    // Getters
     public String getSubject() {
         return subject;
     }
@@ -27,6 +38,7 @@ public class Message {
         return body;
     }
 
+    // Setters
     public void setSubject(String subject) {
         this.subject = subject;
     }
