@@ -13,6 +13,7 @@ package heig.res.config;
 import heig.res.model.mail.Person;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -95,10 +96,9 @@ public class ConfigurationManager implements IConfigurationManager {
     public List<Person> loadVictims(String file) {
         List<Person> result = new ArrayList<>();
         try (FileInputStream input = new FileInputStream(file)){
-            InputStreamReader reader = new InputStreamReader(input, "UTF-8");
+            InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
             BufferedReader read = new BufferedReader(reader);
             String line;
-            StringBuilder message = new StringBuilder();
             while((line = read.readLine()) != null) {
                 result.add(new Person(line));
             }
