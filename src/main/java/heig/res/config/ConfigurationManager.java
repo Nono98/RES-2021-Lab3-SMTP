@@ -73,9 +73,9 @@ public class ConfigurationManager implements IConfigurationManager {
             InputStreamReader reader = new InputStreamReader(input, "UTF-8");
             BufferedReader read = new BufferedReader(reader);
             String line;
-            StringBuilder message = new StringBuilder();
             while((line = read.readLine()) != null) {
-                while((line != null && !line.contains("=="))) {
+                StringBuilder message = new StringBuilder();
+                while((line != null && !line.equals("=="))) {
                     message.append(line);
                     message.append("\n");
                     line = read.readLine();

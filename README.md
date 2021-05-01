@@ -49,7 +49,7 @@ Puis on peut exécuter le second script, qui exécutera le conteneur:
 
 Ces deux logs d'information devraient s'afficher:
 
-![runDocker](/home/noemie/Documents/RES/Labo_3/RES-2021-Lab3-SMTP/figures/runDocker.png)
+![runDocker](figures/runDocker.png)
 
 Il est à présent possible de se connecter à l'interface web à l'adresse: `http://localhost:8282`
 
@@ -77,7 +77,7 @@ Le fichier `victims.utf8` contient toutes les adresses mails des gens faisant pa
 
 ### Configurer les options du client SMTP
 
-Le dernier fichier de configuration concerne les configurations du client SMTP. Pour changer l'adresse IP du serveur, il faut remplacer la valeur du champ `smtpServerAddress`. Il est par défaut à `localhost` pour un client en local. Le port utilisé par le serveur SMTP est à configurer dans le champ `smtpServerPort`. La valeur `numberOfGroups` est le nombre de mails à générer. Il faudra que le nombre d'adresses mails du fichier `victims.utf8` / le nombre de groupe soit plus grand ou égal à 3. Enfin, le champ `witnessesToCC` .....
+Le dernier fichier de configuration concerne les configurations du client SMTP. Pour changer l'adresse IP du serveur, il faut remplacer la valeur du champ `smtpServerAddress`. Il est par défaut à `localhost` pour un client en local. Le port utilisé par le serveur SMTP est à configurer dans le champ `smtpServerPort`. La valeur `numberOfGroups` est le nombre de mails à générer. Il faudra que le nombre d'adresses mails du fichier `victims.utf8` / le nombre de groupe soit plus grand ou égal à 3. Enfin, le champ `witnessesToCC` sont les adresses qui seront mises en copie du mail, elles doivent être séparées par une virgule.
 
 ![](figures/configProperties.png)
 
