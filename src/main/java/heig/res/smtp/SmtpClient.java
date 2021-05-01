@@ -15,6 +15,7 @@ import heig.res.model.mail.Message;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.logging.Logger;
 
 public class SmtpClient implements ISmtpClient {
@@ -114,7 +115,11 @@ public class SmtpClient implements ISmtpClient {
         writer.write("\r\n");
 
         // Inscris le sujet du mail dans le contenu
-        writer.write("Subject: " + message.getSubject());
+        // Encodage en base 64 afin de prendre en comptes les accents
+        String subject_base64 = Base64.getEncoder().encodeToString(message.getSubject().getBytes());
+        String subject_send = "=?utf-8?B?" + subject_base64 + "?=";
+
+        writer.write("Subject: " + subject_send);
         writer.write("\r\n");
         writer.flush();
 
