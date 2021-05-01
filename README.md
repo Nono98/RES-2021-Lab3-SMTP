@@ -89,7 +89,28 @@ Une fois toutes les modifications souhaitées effectuées, nous pouvons lancer n
 mvn clean install
 ````
 
+Puis, on peut exécuter ces deux commandes afin de lancer notre application de prank:
 
+````bash
+cd target/
+java -jar RES-2021-Lab3-SMTP-1.0-SNAPSHOT-standalone.jar
+````
+
+Une fois cette commande terminée, nous pouvons aller sur le naviguateur à l'adresse précisée plus haut, et on peut consulter le ou les mails.
+
+### Test de fonctionnement
+
+Pour savoir si notre application a réellement fonctionné, on devrait pouvoir visualiser nos mails dans le naviguateur:
+
+![](figures/email_example.png)
+
+Si on ouvre un mail, on peut voir les détails:
+
+![](figures/inside_mail.png)
+
+On peut également voir sur la console du serveur SMTP les mails envoyés:
+
+![](/home/noemie/Documents/RES/Labo_3/RES-2021-Lab3-SMTP/figures/log_serveur.png)
 
 ## Implémentation
 
@@ -101,21 +122,14 @@ Tous les fichiers .java se trouvent dans le répertoire src, qui se situe à la 
 
 Les fichiers sources ont été séparés en différents package pour une meilleure organisation des fichiers.
 
-### Package config
+### Diagramme de classe
 
+Nous avons effectué un digramme de classe afin d'avoir une meilleure vision de notre implémentation. 
 
+![](figures/digrammeDeClasse.png)
 
-### Package model.mail
+### Logs de l'application
 
+Lors de chaque étape importante du protocole SMTP, nous avons ajouté un log qui affiche `INFOS: 250 OK` pour chaque ligne acceptée par le server.
 
-
-### Package model.prank
-
-
-
-### Package smtp
-
-
-
-### Fichier MailRobot
-
+![](figures/log_appli.png)
