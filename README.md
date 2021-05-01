@@ -110,7 +110,7 @@ Si on ouvre un mail, on peut voir les détails:
 
 On peut également voir sur la console du serveur SMTP les mails envoyés:
 
-![](/home/noemie/Documents/RES/Labo_3/RES-2021-Lab3-SMTP/figures/log_serveur.png)
+![](figures/log_serveur.png)
 
 ## Implémentation
 
