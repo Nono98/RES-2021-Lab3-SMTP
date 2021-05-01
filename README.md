@@ -126,7 +126,7 @@ Les fichiers sources ont été séparés en différents package pour une meilleu
 
 Nous avons effectué un digramme de classe afin d'avoir une meilleure vision de notre implémentation. 
 
-![](figures/digrammeDeClasse.png)
+![](figures/diagrammeDeClasse.png)
 
 ### Logs de l'application
 
