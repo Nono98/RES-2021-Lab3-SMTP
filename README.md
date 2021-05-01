@@ -6,9 +6,52 @@
 
 Dans le cadre d'un laboratoire durant le module de Réseaux (RES) à l'HEIG-VD, nous avons dû développer un client SMTP en Java par groupe de 2. Cette application utilise la Socket API pour communiquer avec un serveur SMTP MockMock.
 
+Il met en place une application qui a pour but d'envoyer des mails prankés à plusieurs groupes avec des messages pré-définis. 
+
 ## Mise en place du serveur MockMock
 
+Pour pouvoir tester notre application, nous avons utilisé un serveur "mock". C'est une interface de mail qui nous permet d'envoyer des "faux" emails et de pouvoir les visualiser. "Faux" dans le sens où les mails ne sont pas réellement envoyés. Cela nous permet d'éviter d'envoyer des mails par accident lors du test de l'application.
 
+Afin de faciliter l'utilisateur, nous avons donc configuré un conteneur Docker pour le server mock SMTP. Pour ce faire, nous avons donc utilisé le serveur MockMock (https://github.com/tweakers/MockMock) qui est facile d'accès et a une interface web simple. 
+
+Dans le projet, il y a dossier `SMTPServer`, qui se compose de:
+
+- `Dockerfile`
+- `MockMock-1.4.0.one-jar.jar`
+- `build-image.sh`
+- `run-container.sh`
+
+Dans le fichier `Dockerfile`, on peut modifier le port pour la communication SMTP; nous avons configuré le serveur SMTP avec le port `7777`. Le second port précisé `8282` est le port par défaut pour la connexion web; si on voudrait le modifier, il faut modifier la dernière ligne du fichier par:
+
+````bash
+CMD ["java", "-jar", "/opt/app/mockmock.jar", "-p", "7777", "-h", "8080"]
+````
+
+/!\ Si le port web par défaut a été modifié, il faut également modifier la ligne du script `run-container.sh` par:
+
+````bash
+docker run -p 7777:7777 -p 8080:8080 mockserver
+````
+
+### Exécution
+
+Pour exécuter le serveur SMTP en arrière plan, on lance premièrement le script `build-image.sh` pour créer le conteneur:
+
+````bash
+./build-image.sh
+````
+
+Puis on peut exécuter le second script, qui exécutera le conteneur:
+
+````bash
+./run-container.sh
+````
+
+Ces deux logs d'information devraient s'afficher:
+
+![runDocker](/home/noemie/Documents/RES/Labo_3/RES-2021-Lab3-SMTP/figures/runDocker.png)
+
+Il est à présent possible de se connecter à l'interface web à l'adresse: `http://localhost:8282`
 
 ## Utilisation du programme
 
@@ -39,6 +82,12 @@ Le dernier fichier de configuration concerne les configurations du client SMTP. 
 ![](figures/configProperties.png)
 
 ### Lancer l'application
+
+Une fois toutes les modifications souhaitées effectuées, nous pouvons lancer notre application de prank. Pour ce faire, il faut premièrement build le projet en effectuant cette commande dans le répertoire racine du projet:
+
+````bash
+mvn clean install
+````
 
 
 
