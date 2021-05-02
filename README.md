@@ -128,8 +128,12 @@ Nous avons effectué un digramme de classe afin d'avoir une meilleure vision de 
 
 ![](figures/diagrammeDeClasse.png)
 
+La classe `MailRobot` est la classe principale de l'application; elle s'occupe de récupérer les informations du client (le port et l'adresse IP). Ainsi, elle peut directement appeler le client SMTP qui s'occupe de tout le protocole. 
+
+La classe `PrankGenerator` est la classe qui s'occupe de créer tous les pranks avec les groupes.
+
 ### Logs de l'application
 
-Lors de chaque étape importante du protocole SMTP, nous avons ajouté un log qui affiche `INFOS: 250 OK` pour chaque ligne acceptée par le server.
+Lors de chaque étape importante du protocole SMTP, nous avons ajouté un log qui affiche  l'action effectuée. Ainsi, nous pouvons facilement se rendre compte à quelle étape nous sommes.
 
-![](figures/log_appli.png)
+![](figures/protocole.png)

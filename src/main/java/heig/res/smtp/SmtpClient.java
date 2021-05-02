@@ -22,6 +22,9 @@ public class SmtpClient implements ISmtpClient {
     private static final Logger LOG = Logger.getLogger(SmtpClient.class.getName());
     private final String smtpServerAddress;
     private final int smtpServerPort;
+    private Socket socket;
+    private PrintWriter writer;
+    private BufferedReader reader;
 
     /**
      * Constructeur
@@ -36,17 +39,17 @@ public class SmtpClient implements ISmtpClient {
     @Override
     public void sendMessage(Message message) throws IOException {
         LOG.info("Sending message via SMTP");
-        Socket socket = new Socket(smtpServerAddress, smtpServerPort);
 
-        PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        socket = new Socket(smtpServerAddress, smtpServerPort);
+        writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 
-        String line = reader.readLine();
-        LOG.info(line);
+        lineRead();
 
         writer.printf("EHLO localhost\r\n");
-        line = reader.readLine();
-        LOG.info(line);
+        LOG.info("Command: EHLO localhost");
+
+        String line = reader.readLine();
 
         if(!line.startsWith("250")) {
             throw new IOException("SMTP Error: " + line);
@@ -57,43 +60,35 @@ public class SmtpClient implements ISmtpClient {
             LOG.info(line);
         }
 
+        LOG.info("Command to add sender: MAIL FROM " + message.getFrom());
         // Récupération de l'envoyeur pour l'en-tête
         writer.write("MAIL FROM:");
-        writer.write(message.getFrom());
-        writer.write("\r\n");
-        writer.flush();
+        lineWrite(message.getFrom());
 
-        line = reader.readLine();
-        LOG.info(line);
+        lineRead();
 
         // Parcours de tous les destinataires principaux pour l'en-tête
         for(String to : message.getTo()) {
+            LOG.info("Command to add victims: RCPT TO: " + to);
             writer.write("RCPT TO:");
-            writer.write(to);
-            writer.write("\r\n");
-            writer.flush();
+            lineWrite(to);
 
-            line = reader.readLine();
-            LOG.info(line);
+            lineRead();
         }
 
         // Parcours de tous les destinataires en copie pour l'en-tête
         for(String cc : message.getCc()) {
+            LOG.info("Command to add CC victims: RCPT TO: " + cc);
             writer.write("RCPT TO:");
-            writer.write(cc);
-            writer.write("\r\n");
-            writer.flush();
+            lineWrite(cc);
 
-            line = reader.readLine();
-            LOG.info(line);
+            lineRead();
         }
 
+        LOG.info("Command to start writing message: DATA");
         // Récupération du contenu du mail
-        writer.write("DATA");
-        writer.write("\r\n");
-        writer.flush();
-        line = reader.readLine();
-        LOG.info(line);
+        lineWrite("DATA");
+        lineRead();
 
         writer.write("Content-Type: text/plain: charset=\"utf-8\"\r\n");
 
@@ -119,26 +114,34 @@ public class SmtpClient implements ISmtpClient {
         String subject_base64 = Base64.getEncoder().encodeToString(message.getSubject().getBytes());
         String subject_send = "=?utf-8?B?" + subject_base64 + "?=";
 
-        writer.write("Subject: " + subject_send);
-        writer.write("\r\n");
-        writer.flush();
+        lineWrite("Subject: " + subject_send);
 
         // Inscris le corps du mail dans le contenu
-        LOG.info(message.getBody());
+        LOG.info("Message to send: " + message.getBody());
         writer.write(message.getBody());
         writer.write("\r\n");
         writer.write(".");
         writer.write("\r\n");
         writer.flush();
 
-        line = reader.readLine();
-        LOG.info(line);
+        lineRead();
 
-        writer.write("QUIT\r\n");
-        writer.flush();
+        LOG.info("Command to quit: QUIT");
+        lineWrite("QUIT");
 
         reader.close();
         writer.close();
         socket.close();
+    }
+
+    private void lineWrite(String s) {
+        writer.write(s);
+        writer.write("\r\n");
+        writer.flush();
+    }
+
+    private void lineRead() throws IOException {
+        String line = reader.readLine();
+        LOG.info(line);
     }
 }
